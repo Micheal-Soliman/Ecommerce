@@ -6,7 +6,7 @@ const thirdColor = '#e3f2fd'
 
 export const Container = styled.div`
     background: ${thirdColor};
-    height: calc(100vh - 135px);
+    min-height: calc(100vh - 135px);
     display: flex;
     justify-content: center;
     align-items: center;

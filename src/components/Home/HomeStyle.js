@@ -57,7 +57,7 @@ export const Card = styled.div`
     padding: 20px;
     min-width: 250px;
     @media screen and (max-width: 320px){
-        min-width: auto;
+        min-width: fit-content;
     }
     &:hover {
         box-shadow: 0 0px 20px ${mainColor};
@@ -95,15 +95,20 @@ export const NavLink = styled(Link)`
     color: ${mainColor};
     transition: 0.6s;
     font-weight: 500;
+    text-align: center;
+    margin-right: 5px;
     &:hover {
         background: ${mainColor};
         color: white;
+    }
+    @media screen and (max-width: 320px){
+        margin-right: 5px;
     }
 `
 export const Button = styled.button`
     border: 0px;
     padding: 10px;
-    width: 100px;
+    min-width: 85px;
     background: ${mainColor};
     border: 2px solid ${mainColor};
     color: white;    

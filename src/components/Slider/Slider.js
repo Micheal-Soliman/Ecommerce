@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {Container, Arrow ,Wrapper, Slide,H1,ImgContainer, Image, InfoContainer, Title, Desc, Btn,NavLink} from './SliderStyle'
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@material-ui/icons";
@@ -6,6 +6,13 @@ import { ArrowLeftOutlined, ArrowRightOutlined } from "@material-ui/icons";
 
 
 const Slider = () => {
+  const[somesomeData, setSomesomeData] = useState([])
+    useEffect(()=>{
+        fetch(`https://localhost:5001/api/models/GetAllOrderdBySale/4`)
+        .then(res=>res.json())
+        .then(json=>setSomesomeData(json)) 
+    },[])
+    
   const [slideIndex, setSlideIndex] = useState(0);
   const handleClick = (direction) => {
     if (direction === "left") {
@@ -14,24 +21,29 @@ const Slider = () => {
       setSlideIndex(slideIndex < 3 ? slideIndex + 1 : 0);
     }
   };
-  const {Data} = useSelector((state)=> state.product)
+  // const {somesomeData} = useSelector((state)=> state.product)
   return (
     <Container>
-      {Data.length ? (<>
+      {somesomeData.length ? (<>
         <Arrow direction="left" onClick={() => handleClick("left")}>
               <ArrowLeftOutlined />
             </Arrow>
             <Wrapper slideIndex={slideIndex}>
-              {Data.slice(0,4).map((item) => (
+              {somesomeData.filter((i)=>{
+                if (i.isSale == true) {
+                  return i
+                }
+              }).map((item) => (
                 <Slide bg={item.bg} key={item.id}>
-                  <H1>Sales For 50%</H1>
+                  <H1>Sales For {Math.floor(((100 - ((item.salePrice / item.price) * 100))))}%</H1>
+                  {/* <H1>1Sales For ${item.sale}</H1> */}
                   <ImgContainer>
-                    <Image src={item.image} />
+                    <Image src={item.imagePath} />
                   </ImgContainer>
                   <InfoContainer>
-                    <Title>{item.title}</Title>
-                    <Desc>{item.description}</Desc>
-                    <Btn><NavLink to={`products/${item.id}`}>SHOP NOW</NavLink></Btn>
+                    <Title>{item.name}</Title>
+                    <Desc>{item.features}</Desc>
+                    <Btn><NavLink to={`/products/${item.name}`}>SHOP NOW</NavLink></Btn>
                   </InfoContainer>
                 </Slide>
               ))}

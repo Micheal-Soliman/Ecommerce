@@ -6,13 +6,12 @@ export const contactSlice = createSlice({
   },
   reducers: {
     addRequest: (state, action) => {
-        const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(action.payload)
-      };
-      fetch('https://reqres.in/api/requestClient', requestOptions)
+      fetch('https://reqres.in/api/requestClient', {
+        method: 'POST',
+        body: JSON.stringify(action.payload)
+      }) 
           .then(response => response.json())
+          .then(json=>console.log(json))
       }
     },
   },

@@ -13,9 +13,12 @@ export const Container = styled.div`
     align-items: center;
     flex-direction: column;
 `
+export const TitlePage = styled.h2`
+`
 export const Title = styled.h2`
+    margin-top: 20px;
     color: red;
-    text-align:center;
+    text-align: red;
 `
 export const H1 = styled.h4`
     display: none;
@@ -25,6 +28,7 @@ export const H1 = styled.h4`
 export const Form = styled.form`
     display: flex;
     width: 350px;
+    margin-bottom: 40px;
     align-items: center;
     flex-direction: column;
     border: 1px solid ${mainColor};

@@ -13,6 +13,9 @@ export const Container = styled.div`
     align-items: center;
     flex-direction: column;
 `
+export const TitlePage = styled.h2`
+
+`
 export const Title = styled.h2`
     color: red;
     text-align:center;

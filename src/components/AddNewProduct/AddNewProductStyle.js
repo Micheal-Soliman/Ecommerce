@@ -1,58 +1,44 @@
 import styled from 'styled-components'
-import { NavLink as Link } from 'react-router-dom';
 
 const mainColor = '#2196f3'
 const secondColor = 'black'
 const thirdColor = '#e3f2fd'
 
-export const Container = styled.div`
-    background: ${thirdColor};
-    min-height: calc(100vh - 135px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+export const Wrapper = styled.div`
+    width: 100%;
+    background: ${thirdColor}
 `
 export const Title = styled.h2`
-    color: red;
-    text-align:center;
-`
-export const H1 = styled.h4`
-    display: none;
+    margin-top: 20px;
     text-align: center;
-    margin: 10px 0px;
+    color: red;
 `
+
 export const Form = styled.form`
     display: flex;
-    width: 350px;
     align-items: center;
     flex-direction: column;
-    border: 1px solid ${mainColor};
-    border-radius: 15px;
+    // border-left: 1px solid ${mainColor};
     padding: 40px 20px;
-    @media screen and (max-width: 480px){
-        width: 300px;
-    }
-    @media screen and (max-width: 320px){
-        width: 250px;
-    }
+    // @media screen and (max-width: 480px){
+    //     width: 300px;
+    // }
+    // @media screen and (max-width: 320px){
+    //     width: 250px;
+    // }
 `
 export const Box = styled.div`
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     margin: 15px 0px;
     width: 100%;
 `
-export const BoxLinks = styled.div`
-    display: flex;
-    justify-content: space-between;
-    justify-content: space-evenly;
-    width: 100%;
-    border-bottom: 1px solid;
-    padding-bottom: 10px;
-    width: 100%;
+
+export const TextBox = styled.div`
+    width: 50%;
+
 `
 export const Text = styled.label`
     text-align: center;
@@ -60,11 +46,12 @@ export const Text = styled.label`
         display: none;
     }
 `
+
 export const Input = styled.input`
     border: 1px solid ${mainColor};
     border-radius: 8px;
     font-size: 18px;
-    width: 100%;
+    width: 50%;
     &:focus {
         outline: 0px;
     }
@@ -72,20 +59,36 @@ export const Input = styled.input`
         color: black;
         opacity: 40%;
     }
-
-
+    @media screen and (max-width: 768px) {
+        width: 70%;
+    }
+    @media screen and (max-width: 480px) {
+        width: 90%;
+    }
 `
+export const SelectProduct = styled.select`
+    width: 50%;
+    border: 1px solid ${mainColor};
+    border-radius: 5px;
+    &:focus{
+        min-width: 30%;
+        width: auto;
+        border: 1px solid ${mainColor};
+        border-radius: 5px;
+        outline: 0px;
+    }
+    @media screen and (max-width: 768px) {
+        width: 70%;
+    }
+    @media screen and (max-width: 480px) {
+        width: 90%;
+    }
+`
+
 export const Error = styled.span`
     color: red;
 `
-export const NavLink = styled(Link)`
-    text-decoration: none;
-    color: ${mainColor};
-    &:hover{
-        color: ${mainColor};
-    }
 
-`
 export const Button = styled.input`
     background: ${mainColor};
     color: ${thirdColor};

@@ -1,16 +1,53 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addProduct } from '../../redux/cartSlice'
-import { buyProduct, getProduct } from '../../redux/productSlice'
+import { addProduct, getCart } from '../../redux/cartSlice'
+import {  getProduct } from '../../redux/productSlice'
 import {Container, H2,Card, Image, Box, Title, Price, NavLink, Button, ShowMore, Buttons, Wrapper} from './HomeStyle'
 import Slider from '../Slider/Slider'
+import { useParams } from 'react-router-dom'
 
 function Home() {
-    const {Data} = useSelector((state)=> state.product)
-    const {statue} = useSelector((state)=> state.product)
+
+    // const user = useParams()
+    // const[data, setData] = useState([])
+    // useEffect(()=>{
+    //     if (user.email) {
+    //         fetch(`https://fakestoreapi.com/carts/user/${user.email}`)
+    //         .then(res=>res.json())
+    //         .then(json=>setData(json)) 
+    //     }
+    // },[user.email])
+    // console.log(data[0])
+
+    // const {someData} = useSelector((state)=> state.product)
+    // const {statue} = useSelector((state)=> state.product)
+    const[someData, setSomeData] = useState([])
+    useEffect(()=>{
+        fetch(`https://localhost:5001/api/models/GetAllOrderdByRate/10`)
+        .then(res=>res.json())
+        .then(json=>setSomeData(json)) 
+    },[])
     const dispatch = useDispatch()
     const [style, setStyle] = useState()
-    useEffect(()=> dispatch(getProduct()),[])
+    const [responseRequest, setResponseRequest] = useState('')
+    let Username = sessionStorage.getItem('sign');      
+    const{list} = useSelector((state)=> state.cart)
+
+    // useEffect(async()=>{
+    //     if (Username && list.length == 0) {
+    //         await fetch(`https://fakestoreapi.com/products/${Username}`)
+    //         .then(res=>res.json())
+    //         .then(json=>dispatch(getCart({id: json.id, image: json.image, title: json.title, price: json.price, count: 1})))
+    //         fetch('https://fakestoreapi.com/products?limit=5')
+    //         .then(res=>res.json())
+    //         .then(json=>        
+    //             json.filter((index)=>{
+    //             dispatch(getCart({id: index.id, image: index.image, title: index.title, price: index.price, count:1}))
+    //         }))
+    //     }
+    // },[])
+
+    // useEffect(()=> dispatch(getProduct()),[])
     const Loading = 
     <div style={{
         position:'absolute',
@@ -24,38 +61,56 @@ function Home() {
            </div>
     </div>
     useEffect(()=>{
-        if (Data.length) {
+        if (someData.length) {
             setStyle()
         }else{
             setStyle({
                 background: 'white'
             })
         }
-    },[statue])
+    },[someData.length])
     return (
         <>   
             <Slider />
             <Container style ={style}>
-                {Data.length ?<H2>Some of products</H2>:null}
+                {someData.length ?<H2>Some of products</H2>:null}
                 <Wrapper>
-                    {Data.length ? (Data.slice(0,10).map((i) => {
+                    {someData.length ? (someData.map((i) => {
                         return (
                             <Card key={i.id}>
-                                <Image src={i.image} alt="Background"/>
+                                <Image src={i.imagePath} alt="Background"/>
                                 <Box>
-                                    <Title>{i.title}</Title>
+                                    <Title>{i.name}</Title>
                                     <Price><sup>$</sup>{i.price}</Price>
+                                    <Title>{sessionStorage.getItem('soldout') == i.name && responseRequest}</Title>
                                     <Buttons>
-                                        <NavLink to={`/Ecommerce/products/${i.id}`}>Show More</NavLink>
-                                        <Button onClick={()=>{dispatch(addProduct({id: i.id, image: i.image, title: i.title, price: i.price, count:1}))
-                                         dispatch(buyProduct(i))}}>Buy</Button>
+                                        <NavLink to={`/products/${i.name}`}>Show More</NavLink>
+                                        <Button onClick={()=>{
+                                                              if (sessionStorage.getItem('sign') === null) {
+                                                                  window.location.href = `/signin`
+                                                              } else if (i.name){
+                                                                  sessionStorage.setItem('soldout',`${i.name}`)
+                                                                fetch(`https://localhost:5001/api/carts/add/${Username}/${i.name}`, {
+                                                                    method: 'POST',
+                                                                    headers: { 'Content-Type': 'application/json' },
+                                                                    }) 
+                                                                    .then( function(response) {
+                                                                      return  response.text().then(function(text) {
+                                                                        setResponseRequest(text)
+                                                                     });
+                                                                   });
+                                                                   if (responseRequest == 'Done adding to cart') {
+                                                                      dispatch(addProduct())
+                                                                   }
+                                                                   
+                                                 }}}>Add To Cart</Button>
                                     </Buttons>   
                                 </Box>
                             </Card>
                         )   
-                    })) : statue && Loading }
+                    })) :  Loading }
                 </Wrapper>
-                {Data.length ? <ShowMore to='/products' onClick={()=> window.scrollTo(0)}> Show All</ShowMore> : null}           
+                {someData.length ? <ShowMore to='/products' onClick={()=> window.scrollTo(0)}> Show All</ShowMore> : null}           
             </Container>
         </>
     )

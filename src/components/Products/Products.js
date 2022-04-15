@@ -1,16 +1,30 @@
 import React, {useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addProduct } from '../../redux/cartSlice'
-import { buyProduct, getProduct } from '../../redux/productSlice'
+import { getProduct } from '../../redux/productSlice'
 import {Wrapper,Card, Image, Box, Title, Price, NavLink, Button, Buttons, Container} from '../Home/HomeStyle'
 import {Head, SearchBox,SearchIcon, Search, FilterBox, ButtonFilter} from './productsStyle'
 function Products() {
+    // useEffect(()=>{
+    //     fetch('https://localhost:5001/api/clients')
+    //     .then(response => response.json())
+    //     .then(json => console.log(json))
+    // },[])
+
     const {Data} = useSelector((state)=> state.product)
+    let Username = sessionStorage.getItem('sign');      
+    const [show, setShow] = useState(Data)
+    const [sold, setSold] = useState('')
+    const [responseRequest, setResponseRequest] = useState('')
+    // console.log(Data)
     const {statue} = useSelector((state)=> state.product)
     const dispatch = useDispatch()
     useEffect(()=> dispatch(getProduct()),[])
+    useEffect(()=>{
+
+    },[])
     useEffect(()=> setShow(Data),[statue])
-    const [show, setShow] = useState(Data)
+    const [idProduct, setIdProduct] = useState()
     const [searchTerm, setSearchTerm] = useState('')
     const search = useRef()
     const setFilter = (category, cat) => {
@@ -44,10 +58,10 @@ function Products() {
                     </SearchBox>
                     <FilterBox>
                         <ButtonFilter onClick={() => setShow(Data)}>All</ButtonFilter>
-                        <ButtonFilter onClick={() => setFilter("men's clothing")}>Men's Clothing</ButtonFilter>
-                        <ButtonFilter onClick={() => setFilter("women's clothing")}>Women's Clothing</ButtonFilter>
-                        <ButtonFilter onClick={() => setFilter("jewelery")}>Jewelery</ButtonFilter>
-                        <ButtonFilter onClick={() => setFilter("electronics")}>Electronics</ButtonFilter>
+                        <ButtonFilter onClick={() => setFilter("RAM")}>Ram</ButtonFilter>
+                        <ButtonFilter onClick={() => setFilter("SSD")}>Hard Disk</ButtonFilter>
+                        <ButtonFilter onClick={() => setFilter("K&M")}>Keyboard</ButtonFilter>
+                        <ButtonFilter onClick={() => setFilter("Mouse")}>Mouse</ButtonFilter>
                     </FilterBox>
                 </Head> 
                 : null}
@@ -55,21 +69,39 @@ function Products() {
             {show.length ? (show.filter((i) => {
                             if (searchTerm == '') {
                                 return i
-                            } else if (i.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+                            } else if (i.name.toLowerCase().includes(searchTerm.toLowerCase())) {
                                 return i
-                            }else if(show.length == 0){
                             }
                         }).map((i) => {
                                 return (
-                                    <Card key={i.id}>
-                                        <Image src={i.image} alt="Background"/>
+                                    <Card key={i.name}>
+                                        <Image src={i.imagePath} alt="Background"/>
                                         <Box>
-                                            <Title>{i.title}</Title>
+                                            <Title>{i.name}</Title>
                                             <Price><sup>$</sup>{i.price}</Price>
+                                            <Title>{sessionStorage.getItem('soldout') == i.name && responseRequest}</Title>
+                                           
                                             <Buttons>
-                                                <NavLink to={`products/${i.id}`}>Show More</NavLink>
-                                                <Button onClick={()=>{dispatch(addProduct({id: i.id, image: i.image, title: i.title, price: i.price, count:1}))
-                                                dispatch(buyProduct(i))}}>Buy</Button>
+                                                <NavLink to={`/products/${i.name}`}>Show More</NavLink>
+                                                <Button onClick={()=>{
+                                                              if (sessionStorage.getItem('sign') === null) {
+                                                                  window.location.href = `/signin`
+                                                              } else if (i.name){
+                                                                  sessionStorage.setItem('soldout',`${i.name}`)
+                                                                fetch(`https://localhost:5001/api/carts/add/${Username}/${i.name}`, {
+                                                                    method: 'POST',
+                                                                    headers: { 'Content-Type': 'application/json' },
+                                                                    }) 
+                                                                    .then( function(response) {
+                                                                      return  response.text().then(function(text) {
+                                                                        setResponseRequest(text)
+                                                                     });
+                                                                   });
+                                                                   if (responseRequest == 'Done adding to cart') {
+                                                                      dispatch(addProduct())
+                                                                   }
+                                                                   
+                                                 }}}>Add To Cart</Button>
                                             </Buttons>   
                                         </Box>
                                     </Card>

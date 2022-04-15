@@ -7,7 +7,7 @@ const thirdColor = '#e3f2fd'
 
 export const Container = styled.div`
   width: 100%;
-  height: calc(100vh - 85px);
+  min-height: calc(100vh - 85px);
   display: flex;
   position: relative;
   overflow: hidden;
@@ -53,13 +53,16 @@ export const Slide = styled.div`
   align-items: center;
   @media screen and (max-width: 992px){
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
   }
 `;
 export const H1 = styled.h1`
   position: absolute;
   top: 10%;
   letter-spacing: 4px;
+  @media screen and (max-width: 992px){
+    position: unset;
+  }
 `;
 
 export const ImgContainer = styled.div`

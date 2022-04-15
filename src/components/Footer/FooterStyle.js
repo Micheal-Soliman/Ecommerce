@@ -27,5 +27,8 @@ export const Name = styled.span`
 export const NavLink = styled.a`
     text-decoration: none;
     color: ${thirdColor};
+    &:hover{
+        color: ${thirdColor};
+    }
 
 `

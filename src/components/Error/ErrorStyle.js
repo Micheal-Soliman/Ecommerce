@@ -9,7 +9,7 @@ export const Container = styled.div`
     background: ${thirdColor};
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 135px);
+    min-height: calc(100vh - 135px);
     @media screen and (max-width: 768px){
         flex-direction: column;
         justify-content: space-around;

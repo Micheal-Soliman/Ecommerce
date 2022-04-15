@@ -4,13 +4,13 @@ const secondColor = 'black'
 const thirdColor = '#e3f2fd'
 
 export const Container = styled.div`
-    height: calc(100vh - 135px);
+    min-height: calc(100vh - 135px);
     background: ${thirdColor};
     display: flex;
     justify-content: center;
     align-items: center;
     @media screen and (max-width: 768px){
-        padding: 0px;
+        padding: 10px 0px;
     }
 `
 export const Box = styled.div`
@@ -30,9 +30,9 @@ export const Image = styled.img`
         height: 180px;
         margin-bottom: 8px;
     }
-    @media screen and (max-width: 600px){
-        display:none;
-    }
+    // @media screen and (max-width: 600px){
+    //     display:none;
+    // }
 `
 export const BoxProduct = styled.div`
     flex:1;
@@ -64,7 +64,7 @@ export const ItemButton = styled.div`
         margin-top: 20px;
     }
     @media screen and (max-width: 320px){
-        margin-top: 0px;
+        margin-top: 10px;
     }
 `
 export const Button = styled.button`
