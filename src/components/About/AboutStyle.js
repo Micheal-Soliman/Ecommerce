@@ -13,12 +13,9 @@ export const Container = styled.div`
     flex-direction: column;
     color: ${secondColor};
 `
-export const Title = styled.h1`
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);    
+export const Title = styled.h1` 
     letter-spacing: 2px;
+    margin: 10px 0px;
 `
 export const Card = styled.div`
     width: 40vw;
@@ -28,6 +25,7 @@ export const Card = styled.div`
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     perspective: 1000px;
+    margin: 10px 0px;
     &:hover{
         cursor: pointer;
     }

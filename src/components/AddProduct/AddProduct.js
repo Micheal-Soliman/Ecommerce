@@ -3,18 +3,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import {addSellerOldProducts, addSellerProducts, getSellerProducts} from '../../redux/sellerSlice'
 import Dashboard from '../Dashboard/Dashboard'
 import {Container} from '../SellerHome/SellerHomeStyle'
-import {Wrapper, Form, SelectProduct, Box, TextBox,Text,Input, BoxBtn,Button, NavLink, Error} from './AddProductStyle'
+import {Wrapper, Form, SelectProduct, Box, TextBox,Text,Input, BoxBtn,Button, NavLink, Error, BoxSearch, Option, SelectIcon, ValueOption} from './AddProductStyle'
 
 function AddProduct() {
     const [name, setName] = useState('')
     const [quantity, setQuantity] = useState('')
+    const guess = []
     const [E1, setE1] = useState('')
     const refName = useRef()
     const refQuantity = useRef()
     const dispatch = useDispatch()
-    // useEffect(()=>{dispatch(getSellerProducts())},[])
-    // const {Data} = useSelector((state)=>state.seller)
-    // const {statue} = useSelector((state)=>state.seller)
     const [Data, setData] = useState([])
     const username = sessionStorage.getItem('signSeller')
     useEffect(()=>{
@@ -22,18 +20,15 @@ function AddProduct() {
         .then(response=>response.json())
         .then(json=>setData(json))
     },[])
+    console.log(name)
+
     const handleClick = (x) =>{
         x.preventDefault();
-        if (name === '') {
-            setE1('Select Product Please')
-        } else {
-            dispatch(addSellerOldProducts({name, quantity}))
-            refName.current.value = ''
-            refQuantity.current.value = ''
-            setE1('')
-        }
+        dispatch(addSellerOldProducts({name, quantity}))
+        refName.current.value = ''
+        refQuantity.current.value = ''
+        window.location.href = `/sellerhome`
     }
-    // console.log(Data)
   return (
     <Container>
         <Dashboard/>
@@ -43,15 +38,24 @@ function AddProduct() {
                     <TextBox>
                         <Text onClick={() => refName.current.focus()}>Name</Text>
                     </TextBox>
-                    <SelectProduct required onChange={(x)=>setName(x.target.value)} ref={refName}>
-                        <option value='' >Select The Product</option>
-                        {Data.map((i)=>{
+                    <Input required placeholder='Write Your Name' value={name} onChange={(x)=>setName(x.target.value)} ref={refName} />
+                    <BoxSearch>
+                        {Data.filter((i)=>{
+                            if (name == '') {
+                                return
+                            }
+                            else if (i.name.toLowerCase().includes(name.toLowerCase())) {
+                                return i
+                            }
+                        }).map((j)=>{
                             return(
-                                <option key={Math.random()} value={i.name} > {i.name}</option>
+                                <Option key={Math.random()}>
+                                    <ValueOption>{j.name}</ValueOption>
+                                    <SelectIcon onClick={()=>{setName(j.name)}}/>
+                                </Option>
                             )
                         })}
-                    </SelectProduct> 
-                    <Error>{E1}</Error>
+                    </BoxSearch>
                 </Box>
 
                 <Box>

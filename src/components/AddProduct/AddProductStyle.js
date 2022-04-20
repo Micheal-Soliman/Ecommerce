@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { NavLink as Link } from 'react-router-dom'
+import {GrCheckboxSelected} from 'react-icons/gr'
 
 const mainColor = '#2196f3'
 const secondColor = 'black'
@@ -33,23 +34,19 @@ export const Box = styled.div`
     margin: 15px 0px;
     width: 100%;
 `
-export const SelectProduct = styled.select`
-    width: 50%;
-    border: 1px solid ${mainColor};
-    border-radius: 5px;
-    &:focus{
-        min-width: 30%;
-        width: auto;
-        border: 1px solid ${mainColor};
-        border-radius: 5px;
-        outline: 0px;
-    }
-    @media screen and (max-width: 768px) {
-        width: 70%;
-    }
-    @media screen and (max-width: 480px) {
-        width: 90%;
-    }
+export const BoxSearch = styled.div`
+    width:50%;
+`
+export const Option = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+
+`
+export const ValueOption = styled.span`
+`
+export const SelectIcon = styled(GrCheckboxSelected)`
+    cursor: pointer;
 `
 export const Error = styled.span`
     color: red;

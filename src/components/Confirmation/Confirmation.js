@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {Container, Form, Input, Box, Text,Button, H1, Title, NavLink, BoxLinks, Error, TitlePage} from './ConfirmationStyle'
 
 
@@ -8,33 +8,8 @@ function Confirmation() {
     const [responseRequest, setResponseRequest] = useState('')
     const [E1, setE1] = useState('')
     const [style, setStyle] = useState()
-    const Username = sessionStorage.getItem('sign');    
-    // console.log(responseRequest) 
-    // useEffect(()=>{
-    //     if (/[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/.test(confirmCode)) {
-    //         setE1('Please Enter Letters And Number And Underscroe And Dash Line Only')
-    //         setAccept1(false)
-    //     }else if (confirmCode.length > 30) {
-    //         setE1('Please Enter Word Contains 30 Letters Only')
-    //         setAccept1(false)
-    //     }else{
-    //         setAccept1(true)
-    //         setE1('')
-    //         setE3('')
-    //     }
-    // },[confirmCode])
-    
-    const handleClick = (x) =>{
-        x.preventDefault();
-        fetch(`https://localhost:5001/api/clients/Verify/${Username}/${confirmCode}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-            }) 
-            .then( function(response) {
-                 return  response.text().then(function(text) {
-                  setResponseRequest(text)
-                });
-              });
+    const Username = sessionStorage.getItem('sign'); 
+    useEffect(()=>{
         if ( responseRequest == Username) {
             setE1('')
             setStyle({
@@ -44,7 +19,20 @@ function Confirmation() {
             window.location.href = `/Ecommerce`
         } else if(responseRequest != '') {
             setE1('Enter Your Confirm Code Again')
-        }      
+        } 
+    },[responseRequest])       
+    const handleClick = (x) =>{
+        x.preventDefault();
+        fetch(`https://localhost:5001/api/clients/Verify/${Username}/${confirmCode}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            }) 
+            .then(function(response) {
+                 return  response.text().then(function(text) {
+                  setResponseRequest(text)
+                  console.log(responseRequest)
+                });
+              });     
     }
   return (
     <Container>

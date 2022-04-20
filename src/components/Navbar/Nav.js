@@ -11,18 +11,8 @@ function Nav() {
     const [size, setSize] = useState()
     const [LOC1, setLOC1] = useState()
     const [LOC2, setLOC2] = useState()
-    const [lengthCart, setLengthCart] = useState()
     const {numberItems} = useSelector((state)=> state.cart)
-    const Username = sessionStorage.getItem('sign')
-    useEffect(()=>{
-        fetch(`https://localhost:5001/api/carts/count/${Username}`)
-        .then(response=>response.json())
-        .then(json=>setLengthCart(json))
-    },[])
-    // useEffect(()=>{
-    //     dispatch(getLength(numberItems))
-    // },[])
-    
+    const Username = sessionStorage.getItem('sign')    
     let Sellername = sessionStorage.getItem('Sellername');
     
     useEffect(()=>{
@@ -35,9 +25,6 @@ function Nav() {
         }   
     },[Sellername])
    
-
-
-
     const showMenu = () =>{
         if (show == true) {        
             setStyle(menuMobile)
@@ -45,6 +32,7 @@ function Nav() {
             setStyle()
         }
     }
+    
     useEffect(showMenu,[show])    
 
     const showCaretMenu = () =>{
@@ -90,7 +78,7 @@ function Nav() {
                 <Right>
                     <NavBtnLink to='/cart'>
                         <Cart />
-                        <Num>{lengthCart + numberItems}</Num> 
+                        <Num>{numberItems}</Num> 
                     </NavBtnLink>
                     <Bar onClick={()=>setShow(!show)}/>
                     <Caret onClick={()=>setshowCaret(!showCaret)}/>

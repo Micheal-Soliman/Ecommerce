@@ -71,7 +71,7 @@ export const SelectProduct = styled.select`
     border: 1px solid ${mainColor};
     border-radius: 5px;
     &:focus{
-        min-width: 30%;
+        min-width: 50%;
         width: auto;
         border: 1px solid ${mainColor};
         border-radius: 5px;

@@ -47,7 +47,7 @@ function Contact() {
     },[Email])
 
     useEffect(()=>{
-        if (/[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/.test(Report)) {
+        if (/[`!@#$%^&*()+\=\[\]{};:"\\|,.<>\/?~]/.test(Report)) {
             setE3('Please Enter Letters And Number And Underscroe And Dash Line Only')
             setAccept3(false)
         }else if (Report.length > 30) {

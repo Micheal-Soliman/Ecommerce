@@ -15,7 +15,50 @@ function SellerSignin() {
     const [accept1, setAccept1] = useState(true)
     const [accept2, setAccept2] = useState(true)
     const [responseRequest, setResponseRequest] = useState('')
-    const name = sessionStorage.getItem('signSeller');  
+    const name = sessionStorage.getItem('signSeller');
+
+    const handleClick = (x) =>{
+        x.preventDefault();
+        setResponseRequest('')
+        if (accept1 == true && accept2 == true) {
+            setE3('')
+            sessionStorage.setItem('signSeller', `${Username}`);
+            fetch(`https://localhost:5001/api/Vendors/signin/${Username}/${Pass}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            }) 
+            .then(function(response) {
+                    return response.text().then(function(text) {
+                        setResponseRequest(text)
+                });
+            });
+        } else {
+            setE3('Try Again')
+        }
+    }
+
+    useEffect(()=>{
+        if (Username == responseRequest && Username) {
+            setE1('')
+            setE2('')
+            setE3('')
+            setStyle({
+                display: 'block'
+            })
+            UsernameInput.current.value = ''
+            PassInput.current.value = ''
+            window.location.href = `/sellerhome`
+        }else if( responseRequest == `Vendor with username : ${Username} is not found`){
+            setE1(responseRequest)
+            setE3('Try Again')
+            setAccept1(false)
+        }else {
+            setE2(responseRequest)
+            setE3('Try Again')
+            setAccept2(false)
+        }
+    },[responseRequest])  
+    
   useEffect(()=>{
       if (/[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/.test(Username)) {
           setE1('Please Enter Letters And Number And Underscroe And Dash Line Only')
@@ -44,45 +87,7 @@ function SellerSignin() {
       }
   },[Pass])
 
-  const handleClick = (x) =>{
-    x.preventDefault();
-    if (accept1 == true && accept2 == true) {
-        setE3('')
-        sessionStorage.setItem('signSeller', `${Username}`);
-        fetch(`https://localhost:5001/api/Vendors/signin/${Username}/${Pass}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-        }) 
-        .then(function(response) {
-                return response.text().then(function(text) {
-                setResponseRequest(text)
-            });
-        });
-        console.log(responseRequest)
-        if (name == responseRequest) {
-            setE1('')
-            setE2('')
-            setE3('')
-            setStyle({
-                display: 'block'
-            })
-            UsernameInput.current.value = ''
-            PassInput.current.value = ''
-            window.location.href = `/sellerhome`
-        }else if( responseRequest == 'Wrong password'){
-            setE2(responseRequest)
-            setE3('Try Again')
-            setAccept2(false)
-        }else if( responseRequest == `Vendor with username : ${Username} is not found`){
-            setE1(responseRequest)
-            setE3('Try Again')
-            setAccept1(false)
-        }
 
-    } else {
-        setE3('Try Again')
-    }
-}
 return (
   <Container>
       <TitlePage>Sign in Page</TitlePage>

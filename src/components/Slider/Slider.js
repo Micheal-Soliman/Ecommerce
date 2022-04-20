@@ -34,7 +34,7 @@ const Slider = () => {
                   return i
                 }
               }).map((item) => (
-                <Slide bg={item.bg} key={item.id}>
+                <Slide bg={item.bg} key={Math.random()}>
                   <H1>Sales For {Math.floor(((100 - ((item.salePrice / item.price) * 100))))}%</H1>
                   {/* <H1>1Sales For ${item.sale}</H1> */}
                   <ImgContainer>

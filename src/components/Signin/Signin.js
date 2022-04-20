@@ -17,6 +17,49 @@ function Signin() {
     const [responseRequest, setResponseRequest] = useState('')
     const name = sessionStorage.getItem('sign');    
 
+    const handleClick = (x) =>{
+        x.preventDefault();
+        setResponseRequest('')
+        if (accept1 == true && accept2 == true) {
+            setE3('')
+            sessionStorage.setItem('sign', `${Username}`);
+            fetch(`https://localhost:5001/api/clients/signin/${Username}/${Pass}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            }) 
+            .then(function(response) {
+                    return response.text().then(function(text) {
+                    setResponseRequest(text)
+                });
+            });
+
+        } else {
+            setE3('Try Again')
+        }
+    }
+
+    useEffect(()=>{
+        if (Username == responseRequest && Username) {
+            setE1('')
+            setE2('')
+            setE3('')
+            setStyle({
+                display: 'block'
+            })
+            UsernameInput.current.value = ''
+            PassInput.current.value = ''
+            window.location.href = `/Ecommerce`
+        }else if( responseRequest == `Client with username : ${Username} is not found`){
+            setE1(responseRequest)
+            setE3('Try Again')
+            setAccept1(false)
+        }else {
+            setE2(responseRequest)
+            setE3('Try Again')
+            setAccept2(false)
+        }
+    },[responseRequest])
+
     useEffect(()=>{
         if (/[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/.test(Username)) {
             setE1('Please Enter Letters And Number And Underscroe And Dash Line Only')
@@ -45,45 +88,10 @@ function Signin() {
         }
     },[Pass])
 
-    const handleClick = (x) =>{
-        x.preventDefault();
-        if (accept1 == true && accept2 == true) {
-            setE3('')
-            sessionStorage.setItem('sign', `${Username}`);
-            fetch(`https://localhost:5001/api/clients/signin/${Username}/${Pass}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-            }) 
-            .then(function(response) {
-                    return response.text().then(function(text) {
-                    setResponseRequest(text)
-                });
-            });
-            console.log(responseRequest)
-            if (name == responseRequest) {
-                setE1('')
-                setE2('')
-                setE3('')
-                setStyle({
-                    display: 'block'
-                })
-                UsernameInput.current.value = ''
-                PassInput.current.value = ''
-                window.location.href = `/Ecommerce`
-            }else if( responseRequest == 'Wrong password'){
-                setE2(responseRequest)
-                setE3('Try Again')
-                setAccept2(false)
-            }else if( responseRequest == `Client with username : ${Username} is not found`){
-                setE1(responseRequest)
-                setE3('Try Again')
-                setAccept1(false)
-            }
 
-        } else {
-            setE3('Try Again')
-        }
-    }
+
+
+    
   return (
     <Container>
         <TitlePage>Sign in Page</TitlePage>

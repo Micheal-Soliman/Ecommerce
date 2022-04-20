@@ -38,6 +38,11 @@ export const H2 = styled.div`
         font-size: 25px;
     }
 `
+
+export const Button = styled.button`  
+    
+`
+
 export const style = {
     position:'absolute',
     left: '50%',

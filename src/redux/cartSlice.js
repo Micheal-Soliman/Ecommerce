@@ -5,69 +5,57 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState:{
       list:[], 
-      actualList:[],
-      numberItems: null,
-      num:0
+      numberItems: 0,
   },
   reducers: {
     addProduct: (state, action) => {
-        // fetch(`https://localhost:5001/api/carts/add/${action.payload.nameUser}/${action.payload.nameModel}`, {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   }) 
-        //   .then( function(response) {
-        //     return  response.text().then(function(text) {
-        //      console.log(text)
-        //    });
-        //  });
-        state.numberItems += 1 
-        // console.log(state.numberItems);
-      // state.list.push(action.payload)
-      // for (let i = 0; i < state.list.length; i++) {
-      //   for (let j = i+1; j < state.list.length; j++) {
-      //     if (state.list[i].id == state.list[j].id) {
-      //         state.list.splice(j,1)
-      //         state.list[i].count += 1
-      //     }
-      //   }   
-      // }
+      state.list.push(action.payload)
+      state.numberItems += 1 
+      for (let i = 0; i < state.list.length; i++) {
+        for (let j = i+1; j < state.list.length; j++) {
+          if (state.list[i].model == state.list[j].model) {
+              state.list.splice(j,1)
+              state.list[i].count += 1
+          }
+        }   
+      }
     },
-    // buyProduct: (state, action) => {
-    //     for (let i = 0; i < action.payload.count; i++) {
-    //       fetch(`https://localhost:5001/api/carts/checkout/${action.payload.clientUsername}`, {
-    //         method: 'PUT',
-    //         body: JSON.stringify({id: i.id, model: i.model, clientUsername:i.clientUsername, rate: i.rate})
-    //       })
-    //       .then(async function(response) {
-    //         return await response.text().then(function(text) {
-    //           console.log(text)
-    //        });
-    //      });
-    //       // state.numberItems -= 1
-    //       state.list = state.list.filter((i)=> i.id != action.payload.id)
-    //     }
-    //   },
+    buyProduct: (state, action) => {
+          console.log(action.payload.Username)
+          fetch(`https://localhost:5001/api/carts/checkout/${action.payload}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+          })
+          .then(function(response) {
+            return response.text().then(function(text) {
+              console.log(text)
+           });
+         });
+         state.list = []
+         state.numberItems = 0
+      },
     deleteProduct: (state, action) => {
-      console.log(action.payload)
         fetch(`https://localhost:5001/api/carts/RemoveFromCart/${action.payload.user}/${action.payload.model}`,{
           method:"DELETE"
         })
         .then(res=>res.json())
         .then(json=>console.log(json))
-          state.list.filter((i)=>{
-            if (action.payload.model == i.model) {
-                i.count -= 1
-            }
-          })
-          // // state.list = state.list.filter((i)=> i.id != action.payload.id)
+        state.numberItems -= 1
+        state.list.filter((i)=>{
+          if (action.payload.model == i.model) {
+              i.count -= 1
+              if (i.count == 0) {
+                state.list = state.list.filter((i)=> i.model != action.payload.model)
+              }
+          }
+        })
       },
-    // getLength: (state, action)=>{
-    //   state.numberItems = action.payload 
-    // },  
+    getLength: (state, action)=>{
+      state.numberItems = action.payload 
+    },  
     getCart: (state, action) => {
-      // state.numberItems += 1 
+      state.numberItems += 1 
       state.list.push(action.payload)
-      state.actualList.push(action.payload)
       for (let i = 0; i < state.list.length; i++) {
         for (let j = i+1; j < state.list.length; j++) {
           if (state.list[i].model == state.list[j].model) {

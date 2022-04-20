@@ -63,7 +63,10 @@ export const H1 = styled.h1`
   @media screen and (max-width: 992px){
     position: unset;
   }
-`;
+  @media screen and (max-width: 320px){
+    font-size: 15px;
+  }
+`
 
 export const ImgContainer = styled.div`
   height: 100%;
@@ -76,14 +79,15 @@ export const ImgContainer = styled.div`
 `;
 
 export const Image = styled.img`
-  height: 50%;
+  max-width: 250px;
+  max-height: 250px;
   @media screen and (max-width: 992px){
-    height: 170px;
-    width: 170px;
+    max-width: 200px;
+    max-height: 200px;
   }
-  @media screen and (max-width: 600px){
-    height: 170px;
-    width: 170px;
+  @media screen and (max-width: 480px){
+    max-width: 170px;
+    max-height: 170px;
   }
 `;
 

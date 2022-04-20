@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getSellerProducts } from '../../redux/sellerSlice'
 import Dashboard from '../Dashboard/Dashboard'
 import {Container, ContainerWrapper, Wrapper} from './SellerHomeStyle'
-import{Card, Image, Box, Title, Price} from '../Home/HomeStyle'
+import{Card, Image, Box, Title, Price, ImageContainer} from '../Home/HomeStyle'
 
 function SellerHome() {
     const dispatch = useDispatch()
@@ -35,26 +35,19 @@ function SellerHome() {
         <Dashboard/>
         <ContainerWrapper>
             <Wrapper>
-                        {Data.length ? (Data.map((i) => {
+                        {Data.map((i) => {
                             return (
                                 <Card key={Math.random()}>
-                                    <Image src={i.imagePath} alt="Background"/>
+                                    <ImageContainer>
+                                        <Image src={i.imagePath} alt="Background"/>
+                                    </ImageContainer>
                                     <Box>
                                         <Title>{i.name}</Title>
                                         <Price><sup>$</sup>{i.price}</Price>
-                                        {/* <Buttons>
-                                            <NavLink to={`/products/${i.id}`}>Show More</NavLink>
-                                            <Button onClick={()=>{
-                                                                  if (sessionStorage.getItem('Username') === null) {
-                                                                      window.location.href = `/signin`
-                                                                  } else {
-                                                                    dispatch(addProduct({id: i.id, image: i.image, title: i.title, price: i.price, count:1}))
-                                                                  }}}>Add To Cart</Button>
-                                        </Buttons>    */}
                                     </Box>
                                 </Card>
                             )   
-                        })) : Loading }
+                        })}
             </Wrapper>
         </ContainerWrapper>
     </Container>

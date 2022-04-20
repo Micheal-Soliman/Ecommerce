@@ -18,13 +18,10 @@ function AddNewProduct() {
     const sellerName = sessionStorage.getItem('signSeller')
     const [E0, setE0] = useState('')
     const [E1, setE1] = useState('')
-    const [E2, setE2] = useState('')
-    const [E3, setE3] = useState('')
     const [E4, setE4] = useState('')
     const [E5, setE5] = useState('')
     const [E6, setE6] = useState('')
     const [E9, setE9] = useState('')
-    const [E7, setE7] = useState('')
     const [E8, setE8] = useState('')
     const [accept0, setAccept0] = useState(true)
     const [accept1, setAccept1] = useState(true)
@@ -42,14 +39,11 @@ function AddNewProduct() {
     const refQuantity = useRef()
     const dispatch = useDispatch()
     useEffect(()=>{
-        if (/[`!@#$%^&*()+\=\[\]{};'"\\|,<>\/?~]/.test(name)) {
-            setE0('Please Enter Letters And Number And Underscroe And Dash Line Only')
-            setAccept1(false)
-        }else if (name.length > 30) {
-            setE0('Please Enter Word Contains 30 Letters Only')
-            setAccept1(false)
+        if (name.length > 300) {
+            setE0('Please Enter Word Contains 300 Letters Only')
+            setAccept0(false)
         }else{
-            setAccept1(true)
+            setAccept0(true)
             setE0('')
             setE8('')
         }
@@ -57,7 +51,7 @@ function AddNewProduct() {
 
     useEffect(()=>{
         if (imgPath.length > 512) {
-            setE1('Please Enter Word Contains 30 Letters Only')
+            setE1('Please Enter Word Contains 512 Letters Only')
             setAccept1(false)
         }else{
             setAccept1(true)
@@ -67,11 +61,8 @@ function AddNewProduct() {
     },[imgPath])
 
     useEffect(()=>{
-        if (/[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/.test(brand)) {
-            setE4('Please Enter Letters And Number And Underscroe And Dash Line Only')
-            setAccept4(false)
-        }else if (brand.length > 30) {
-            setE4('Please Enter Word Contains 30 Letters Only')
+        if (brand.length > 100) {
+            setE4('Please Enter Word Contains 100 Letters Only')
             setAccept4(false)
         }else{
             setAccept4(true)
@@ -81,11 +72,8 @@ function AddNewProduct() {
     },[brand])
 
     useEffect(()=>{
-        if (/[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/.test(color)) {
-            setE5('Please Enter Letters And Number And Underscroe And Dash Line Only')
-            setAccept5(false)
-        }else if (color.length > 30) {
-            setE5('Please Enter Word Contains 30 Letters Only')
+        if (color.length > 50) {
+            setE5('Please Enter Word Contains 50 Letters Only')
             setAccept5(false)
         }else{
             setAccept5(true)
@@ -95,11 +83,8 @@ function AddNewProduct() {
     },[color])
 
     useEffect(()=>{
-        if (/[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/.test(features)) {
-            setE6('Please Enter Letters And Number And Underscroe And Dash Line Only')
-            setAccept6(false)
-        }else if (features.length > 30) {
-            setE6('Please Enter Word Contains 30 Letters Only')
+        if (features.length > 600) {
+            setE6('Please Enter Word Contains 600 Letters Only')
             setAccept6(false)
         }else{
             setAccept6(true)
@@ -107,17 +92,6 @@ function AddNewProduct() {
             setE8('')
         }
     },[features])
-    // const handleClick = (x) =>{
-    //     x.preventDefault();
-    //     dispatch(addSellerProducts({imgPath, price, sale, brand, color, features, quantity}))
-    //     refPath.current.value = ''
-    //     refPrice.current.value = ''
-    //     refSale.current.value = ''
-    //     refBrand.current.value = ''
-    //     refColor.current.value = ''
-    //     refFeatures.current.value = ''
-    //     refQuantity.current.value = ''
-    // }
     const handleClick = (x) =>{
         x.preventDefault();
         if (category == '') {
@@ -126,6 +100,7 @@ function AddNewProduct() {
         else if (accept0 == true && accept1 == true && accept4 == true && accept5 == true && accept6 == true) {
             setE8('')
             dispatch(addSellerProducts({name, imgPath, price, sale, brand, color, category, sellerName,features, quantity}))
+            refName.current.value = ''
             refPath.current.value = ''
             refPrice.current.value = ''
             refSale.current.value = ''
@@ -133,7 +108,7 @@ function AddNewProduct() {
             refColor.current.value = ''
             refFeatures.current.value = ''
             refQuantity.current.value = ''
-            // window.location.href = `/sellerhome`
+            window.location.href = `/sellerhome`
         }
          else {
             setE8('Try Again')

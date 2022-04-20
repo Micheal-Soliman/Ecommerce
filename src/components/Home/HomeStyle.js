@@ -64,9 +64,15 @@ export const Card = styled.div`
         border: 0px;
     }
 `
+export const ImageContainer = styled.div`
+    height: 200px;
+`
 export const Image = styled.img`
-    width: 180px;
-    height: 180px;
+    max-width: 250px;
+    max-height: 200px;
+    @media screen and (max-width: 320px){
+        max-width: 200px;
+    }
 `
 export const Box = styled.div`
     flex: 1;
